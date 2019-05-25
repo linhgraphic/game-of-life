@@ -7,9 +7,30 @@ import Modal from "../modal";
 import Options from "../options";
 
 export default class Board extends React.Component {
-  state = { board: generateGrid(this.props.width, this.props.height) };
+  state = {
+    board: generateGrid(this.props.width, this.props.height),
+    options: {
+      startingAlive: 0.2
+    }
+  };
   toggleModal = event => {
     this.setState({ modalVisible: !this.state.modalVisible });
+  };
+  resetGrid = event => {
+    this.setState({
+      board: generateGrid(
+        this.props.width,
+        this.props.height,
+        this.state.options.startingAlive
+      )
+    });
+  };
+  onChangeOptions = event => {
+    this.setState({
+      options: {
+        [event.target.id]: event.target.value
+      }
+    });
   };
   clickHandler = event => {
     // dataset will read the data-*something* attribute in target, in this case giving us a {x: n, y: m} type of object
@@ -26,7 +47,11 @@ export default class Board extends React.Component {
     return (
       <>
         <Modal onClose={this.toggleModal} open={this.state.modalVisible}>
-          <Options onClose={this.toggleModal} />
+          <Options
+            onChange={this.onChangeOptions}
+            options={this.state.options}
+            onClose={this.toggleModal}
+          />
         </Modal>
         <div className="board-container">
           <div className="board">
@@ -46,6 +71,7 @@ export default class Board extends React.Component {
           </div>
           <Button>Start</Button>
           <Button onClick={this.toggleModal}>Settings</Button>
+          <Button onClick={this.resetGrid}>Reset</Button>
         </div>
       </>
     );

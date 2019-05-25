@@ -1,0 +1,15 @@
+.btn {
+  padding: 8px;
+  background-color: aqua;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  color: blue;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.btn:hover {
+  background-color: blue;
+  color: aqua;
+  transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+}
