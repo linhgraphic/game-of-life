@@ -59,13 +59,13 @@ export default class Board extends React.Component {
   onChangeOptions = event => {
     this.setState({
       options: {
+        ...this.state.options,
         [event.target.id]: event.target.value
       }
     });
   };
   clickHandler = event => {
     // dataset will read the data-*something* attribute in target, in this case giving us a {x: n, y: m} type of object
-    console.log(event.target.dataset);
     const { x, y } = event.target.dataset;
     // generating a newBoard element, as we need to pass a new object to setState, so that React can spot the differences
     const newBoard = [...this.state.board.map(row => row.map(cell => cell))]; // or const newBoard = [...this.state.board.map(row => [...row])];
