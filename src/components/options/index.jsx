@@ -24,6 +24,7 @@ const Options = props => (
     <div className="options">
       <Button>Save</Button>
       <Button onClick={props.onClose}>Close</Button>
+      <Button onClick={props.onReset}>Reset</Button>
     </div>
   </div>
 );

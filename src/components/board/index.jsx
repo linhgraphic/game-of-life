@@ -51,6 +51,7 @@ export default class Board extends React.Component {
             onChange={this.onChangeOptions}
             options={this.state.options}
             onClose={this.toggleModal}
+            onReset={this.resetGrid}
           />
         </Modal>
         <div className="board-container">
