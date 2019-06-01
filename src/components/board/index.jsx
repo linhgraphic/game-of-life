@@ -79,6 +79,8 @@ export default class Board extends React.Component {
       <>
         <Modal onClose={this.toggleModal} open={this.state.modalVisible}>
           <Options
+            paused={this.state.paused}
+            onStart={this.handleStart}
             onChange={this.onChangeOptions}
             options={this.state.options}
             onClose={this.toggleModal}

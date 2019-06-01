@@ -84,6 +84,7 @@ const Options = props => (
     </div>
 
     <div className="options">
+      <Button onClick={props.onStart}>{props.paused ? "Start" : "Stop"}</Button>
       <Button>Save</Button>
       <Button onClick={props.onClose}>Close</Button>
       <Button onClick={props.onReset}>Reset</Button>
