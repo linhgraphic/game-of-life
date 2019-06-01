@@ -5,16 +5,47 @@ import generateGrid from "../../utils/generateGrid";
 import Button from "../button";
 import Modal from "../modal";
 import Options from "../options";
+import boardTick from "../../utils/boardTick";
 
 export default class Board extends React.Component {
   state = {
+    paused: true,
     board: generateGrid(this.props.width, this.props.height),
     options: {
-      startingAlive: 0.2
+      startingAlive: 0.2,
+      minCellAlive: 2,
+      maxCellAlive: 3,
+      minCellDead: 3,
+      maxCellDead: 3,
+      interval: 100
     }
   };
   toggleModal = event => {
     this.setState({ modalVisible: !this.state.modalVisible });
+  };
+  handleStart = event => {
+    this.setState(
+      { paused: !this.state.paused },
+      !this.state.paused ? () => null : this.generateTick
+    );
+  };
+  generateTick = event => {
+    setTimeout(
+      () =>
+        this.setState(
+          {
+            board: boardTick(
+              this.state.board,
+              this.state.options.minCellAlive,
+              this.state.options.maxCellAlive,
+              this.state.options.minCellDead,
+              this.state.options.maxCellDead
+            )
+          },
+          this.state.paused ? () => null : this.generateTick
+        ),
+      this.state.options.interval
+    );
   };
   resetGrid = event => {
     this.setState({
@@ -70,7 +101,9 @@ export default class Board extends React.Component {
               </div>
             ))}
           </div>
-          <Button>Start</Button>
+          <Button onClick={this.handleStart}>
+            {this.state.paused ? "Start" : "Stop"}
+          </Button>
           <Button onClick={this.toggleModal}>Settings</Button>
           <Button onClick={this.resetGrid}>Reset</Button>
         </div>
