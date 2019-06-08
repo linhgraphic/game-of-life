@@ -6,10 +6,17 @@ import Button from "../button";
 import Modal from "../modal";
 import Options from "../options";
 import boardTick from "../../utils/boardTick";
+import {
+  deleteAllSaves,
+  getAvailableSaves,
+  saveState
+} from "../../utils/localStorageManager";
+import StateLoader from "../stateLoader";
 
 export default class Board extends React.Component {
   state = {
     paused: true,
+    availableStates: getAvailableSaves() || [],
     board: generateGrid(this.props.width, this.props.height),
     options: {
       startingAlive: 0.2,
@@ -17,11 +24,22 @@ export default class Board extends React.Component {
       maxCellAlive: 3,
       minCellDead: 3,
       maxCellDead: 3,
-      interval: 100
+      interval: 100,
+      cellColour: "#008000"
     }
+  };
+  onDeleteAllStates = () => {
+    deleteAllSaves();
+    this.setState({ availableStates: [] });
+  };
+  onRefreshStates = () => {
+    this.setState({ availableStates: getAvailableSaves() || [] });
   };
   toggleModal = event => {
     this.setState({ modalVisible: !this.state.modalVisible });
+  };
+  toggleLoaderModal = event => {
+    this.setState({ loaderModalVisible: !this.state.loaderModalVisible });
   };
   handleStart = event => {
     this.setState(
@@ -74,7 +92,14 @@ export default class Board extends React.Component {
     // finally, updating state with the newBoard
     this.setState({ board: newBoard });
   };
+  onSave = saveStateName => {
+    saveState(saveStateName, this.state.board);
+    this.setState({ availableStates: getAvailableSaves() || [] });
+  };
+
   render() {
+    const filledCell = this.state.options.cellColour,
+      emptyCell = "rgba(0,0,0,0)";
     return (
       <>
         <Modal onClose={this.toggleModal} open={this.state.modalVisible}>
@@ -85,6 +110,19 @@ export default class Board extends React.Component {
             options={this.state.options}
             onClose={this.toggleModal}
             onReset={this.resetGrid}
+            onSave={this.onSave}
+          />
+        </Modal>
+        <Modal
+          onClose={this.toggleLoaderModal}
+          open={this.state.loaderModalVisible}
+        >
+          <StateLoader
+            onSave={() => null}
+            availableStates={this.state.availableStates}
+            onClose={this.toggleLoaderModal}
+            onRefresh={this.onRefreshStates}
+            onDelete={this.deleteAllSaves}
           />
         </Modal>
         <div className="board-container">
@@ -96,8 +134,8 @@ export default class Board extends React.Component {
                     key={x}
                     data-x={x}
                     data-y={y}
-                    life={cell}
                     onClick={this.clickHandler}
+                    cellColour={cell ? filledCell : emptyCell}
                   />
                 ))}
               </div>
@@ -108,6 +146,7 @@ export default class Board extends React.Component {
           </Button>
           <Button onClick={this.toggleModal}>Settings</Button>
           <Button onClick={this.resetGrid}>Reset</Button>
+          <Button onClick={this.toggleLoaderModal}>Load</Button>
         </div>
       </>
     );

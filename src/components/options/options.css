@@ -1,0 +1,30 @@
+.options-container .options input {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  background: #4b996e;
+  outline: none;
+  opacity: 0.5;
+  transition: opacity 0.2s linear;
+}
+
+.options-container .options input:hover {
+  opacity: 1;
+  transition: opacity 0.2s linear;
+}
+
+.options-container .options input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #1000f5;
+  cursor: pointer;
+}
+
+.options-container .options input::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #4caf50;
+  cursor: pointer;
+}

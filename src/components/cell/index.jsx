@@ -4,7 +4,9 @@ import "./cell.css";
 const Cell = props => (
   <div
     className="cell"
-    style={{ backgroundColor: `rgba(200, 100, 100, ${props.life})` }}
+    style={{
+      backgroundColor: props.cellColour
+    }}
     {...props}
   />
 );
