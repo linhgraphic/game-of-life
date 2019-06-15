@@ -9,7 +9,9 @@ import boardTick from "../../utils/boardTick";
 import {
   deleteAllSaves,
   getAvailableSaves,
-  saveState
+  saveState,
+  deleteSave,
+  loadState
 } from "../../utils/localStorageManager";
 import StateLoader from "../stateLoader";
 
@@ -96,7 +98,13 @@ export default class Board extends React.Component {
     saveState(saveStateName, this.state.board);
     this.setState({ availableStates: getAvailableSaves() || [] });
   };
-
+  onDelete = event => {
+    deleteSave(event.currentTarget.name);
+    this.setState({ availableStates: getAvailableSaves() || [] });
+  };
+  onLoad = event => {
+    this.setState({ board: loadState(event.currentTarget.name) });
+  };
   render() {
     const filledCell = this.state.options.cellColour,
       emptyCell = "rgba(0,0,0,0)";
@@ -122,7 +130,9 @@ export default class Board extends React.Component {
             availableStates={this.state.availableStates}
             onClose={this.toggleLoaderModal}
             onRefresh={this.onRefreshStates}
-            onDelete={this.deleteAllSaves}
+            onDeleteAll={this.deleteAllSaves}
+            onDelete={this.onDelete}
+            onLoad={this.onLoad}
           />
         </Modal>
         <div className="board-container">

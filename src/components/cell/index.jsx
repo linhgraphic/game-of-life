@@ -1,11 +1,11 @@
 import React from "react";
 import "./cell.css";
 
-const Cell = props => (
+const Cell = ({ cellColour, ...props }) => (
   <div
     className="cell"
     style={{
-      backgroundColor: props.cellColour
+      backgroundColor: cellColour
     }}
     {...props}
   />
